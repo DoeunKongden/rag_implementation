@@ -1,0 +1,92 @@
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 404 Not Found"
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+INFO:chromadb.telemetry.product.posthog:Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+INFO:httpx:HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+INFO:main:Chat query processed for user frizzbie: hello
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+ERROR:main:Chat endpoint error: (psycopg2.ProgrammingError) can't adapt type 'module'
+[SQL: INSERT INTO chat_tb (user_id, query, response, timestamp) VALUES (%(user_id)s, %(query)s, %(response)s, %(timestamp)s) RETURNING chat_tb.chat_id]
+[parameters: {'user_id': 2, 'query': "Hello how you're doing what model am I texting with right now?", 'response': "I'm doing well, thanks for asking! You're currently texting with me, an AI assistant model known as Llama-204B (Large Language Model Application).", 'timestamp': <module 'datetime' from 'C:\\Users\\ASUS\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\datetime.py'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+ERROR:main:Chat endpoint error: Error processing chat: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001EBE3D18200>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+INFO:main:Authenticated user: frizzbie
+ERROR:main:Chat endpoint error: (psycopg2.ProgrammingError) can't adapt type 'module'
+[SQL: INSERT INTO chat_tb (user_id, query, response, timestamp) VALUES (%(user_id)s, %(query)s, %(response)s, %(timestamp)s) RETURNING chat_tb.chat_id]
+[parameters: {'user_id': 2, 'query': 'Hello how are you doing', 'response': "I'm doing well, thank you for asking! How can I assist you today?", 'timestamp': <module 'datetime' from 'C:\\Users\\ASUS\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\datetime.py'>}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+INFO:main:Chat query processed for user frizzbie: hello how are you doing
+INFO:main:Authenticated user: frizzbie
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+ERROR:main:Signup failed: Username already registered: kongden
+INFO:main:User created: kongden1
+INFO:main:Created JWT token for user: kongden1
+INFO:main:Login successful: kongden1
+INFO:main:Authenticated user: kongden1
+INFO:main:Authenticated user: kongden1
+INFO:main:Chat query processed for user kongden1: Hello I am kongden
+INFO:main:Authenticated user: kongden1
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+ERROR:main:Login failed: Incorrect username or password for frizzbie
+ERROR:main:Login failed: Incorrect username or password for frizzbie
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+INFO:main:Authenticated user: frizzbie
+ERROR:main:File upload error by user 2:Class 'fastapi.params.File' is not mapped
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+INFO:main:Authenticated user: frizzbie
+ERROR:main:File upload error by user 2:'filename' is an invalid keyword argument for File
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+INFO:main:Authenticated user: frizzbie
+ERROR:main:Login failed: Incorrect username or password for frizzbie
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+INFO:main:Authenticated user: frizzbie
+INFO:main:File uploaded by user frizzbie: 1. Research Paper - DevConnect - Abstract and Introduction part.docx as 2_8b0f76f0-d4df-43c2-93b2-1c5892d41fac.docx
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+INFO:main:Authenticated user: frizzbie
+INFO:main:File uploaded by user frizzbie: 1. Research Paper - DevConnect - Abstract and Introduction part.docx as 2_9ea05d2c-6eae-4380-863b-061d71d00d7b.docx
