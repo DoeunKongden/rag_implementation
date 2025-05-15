@@ -1,8 +1,11 @@
+import uuid
+
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import bcrypt
 import datetime
+from datetime import  timedelta
 
 DATABASE_URL = "postgresql://postgres:DeN112233@localhost:5432/langchain_miniproject"
 engine = create_engine(DATABASE_URL)
@@ -17,6 +20,15 @@ class User(Base):
     profile_img = Column(String, nullable=True)
     user_bio = Column(String, nullable=True)
     user_password = Column(String)
+
+
+class ChatSession(Base):
+    __tablename__ = "chat_session_tb"
+    session_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user_tb.user_id"))
+    title = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.datetime.now())
+    updated_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
 
 class Chat(Base):
@@ -35,6 +47,14 @@ class File(Base):
     file_name = Column(String)
     file_path = Column(String)
     upload_timestamp = Column(DateTime, default=datetime.datetime.utcnow())
+
+
+class Session(Base):
+    __tablename__ = "session_tb"
+    session_id = Column(String, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user_tb.user_id"))
+    created_at = Column(DateTime, default=datetime.datetime.now())
+    expires_at = Column(DateTime)
 
 
 def get_db():
@@ -66,3 +86,16 @@ def authenticate_user(db, username: str, password: str):
     if not bcrypt.checkpw(password.encode('utf-8'), user.user_password.encode('utf-8')):
         return False
     return user
+
+
+def create_session(db, user_id: int, expire_in_minute: int = 30) -> str:
+    session_id = str(uuid.uuid4())
+    expired_at = datetime.datetime.now() + timedelta(minutes=expire_in_minute)
+    db_session = Session(
+        session_id=session_id,
+        user_id=user_id,
+        expired_at=expired_at
+    )
+    db.add(db_session)
+    db.commit()
+    return session_id

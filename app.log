@@ -90,3 +90,7 @@ INFO:main:Login successful: frizzbie
 INFO:main:Authenticated user: frizzbie
 INFO:main:Authenticated user: frizzbie
 INFO:main:File uploaded by user frizzbie: 1. Research Paper - DevConnect - Abstract and Introduction part.docx as 2_9ea05d2c-6eae-4380-863b-061d71d00d7b.docx
+INFO:main:Created JWT token for user: frizzbie
+INFO:main:Login successful: frizzbie
+INFO:main:Authenticated user: frizzbie
+INFO:main:Retrieved 1 files for user frizzbie

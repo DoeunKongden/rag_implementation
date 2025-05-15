@@ -131,7 +131,7 @@ async def get_chat_history(user: User = Depends(get_current_user), db: Session =
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/upload", response_model=FileUploadResponse, tags=['files'])
+@app.post("/upload", response_model=FileUploadResponse, tags=['Files'])
 async def upload_file(file: UploadFile = File(...), user: User = Depends(get_current_user),
                       db: Session = Depends(get_db)):
     try:
@@ -164,4 +164,37 @@ async def upload_file(file: UploadFile = File(...), user: User = Depends(get_cur
 
     except Exception as e:
         logger.error(f"File upload error by user {user.user_id}:{str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/files", response_model=List[FileUploadResponse], tags=["Files"])
+async def get_all_file(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    try:
+        files = db.query(DBFile).filter(DBFile.user_id == user.user_id).order_by(DBFile.upload_timestamp.desc()).all()
+        logger.info(f"Retrieved {len(files)} files for user {user.username}")
+        return files
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/files/{file_id}", tags=["Files"])
+async def delete_file(file_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    try:
+        # Fetch File
+        db_file = db.query(DBFile).filter(DBFile.file_id == file_id, DBFile.user_id == user.user_id).first()
+        if not db_file:
+            logger.error(f"File not found or not owned by user {user.username}: file_id={file_id}")
+            raise HTTPException(status_code=404, detail="File not found or not authorized")
+
+        # Delete the existing file
+        if os.path.exists(db_file.file_path):
+            os.remove(db_file.file_path)
+        else:
+            logger.warning(f"File not found in file system: {db_file.file_path}")
+        db.delete(db_file)
+        db.commit()
+        logger.info(f"File deleted by user {user.username}: file_id={file_id}, filename={db_file.file_name}")
+        return {"message": "File deleted successfully"}
+    except Exception as e:
+        logger.error(f"File deletion error for user {user.username}: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
