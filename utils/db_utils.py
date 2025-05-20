@@ -1,13 +1,15 @@
+import json
 import uuid
 
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import bcrypt
 import datetime
 from datetime import  timedelta
+from typing import List
 
-DATABASE_URL = "postgresql://postgres:DeN112233@localhost:5432/langchain_miniproject"
+DATABASE_URL = "postgresql://postgres:DeN112233@localhost:5432/postgres"
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
@@ -27,6 +29,7 @@ class ChatSession(Base):
     session_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("user_tb.user_id"))
     title = Column(String, nullable=True)
+    file_ids = Column(JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.datetime.now())
     updated_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
 
@@ -35,6 +38,7 @@ class Chat(Base):
     __tablename__ = "chat_tb"
     chat_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("user_tb.user_id"))
+    chat_session_id = Column(Integer, ForeignKey("chat_session_tb.session_id"))
     query = Column(String)
     response = Column(String)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow())
@@ -99,3 +103,72 @@ def create_session(db, user_id: int, expire_in_minute: int = 30) -> str:
     db.add(db_session)
     db.commit()
     return session_id
+
+
+def get_user_by_session(db,session_id: str):
+    session = db.query(Session).filter(Session.session_id == session_id).first()
+    if not session:
+        return None
+    if session.expires_at < datetime.datetime.now():
+        db.delete(session)
+        db.commit()
+        return None
+    return db.query(User).filter(User.user_id == session.user_id).first()
+
+
+def delete_session(db, session_id):
+    session = db.query(Session).filter(Session.session_id == session_id).first()
+    if session:
+        db.delete(session)
+        db.commit()
+
+
+def create_session(db, user_id: int, title: str, file_ids: list = None) -> str:
+    db_session = ChatSession(
+        user_id = user_id,
+        title = title,
+        file_ids = json.dump(file_ids) if file_ids else None
+    )
+
+    db.add(db_session)
+    db.commit()
+    db.refresh(db_session)
+    return db_session.session_id
+
+
+def get_chat_session(db, session_id: int, user_id: int):
+    return db.query(ChatSession).filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id).first()
+
+
+def update_chat_session(db, user_id: int, session_id: int, tittle: str, file_ids: list = None):
+    chat_session = (db.query(ChatSession)
+                    .filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id)
+                    .first())
+    if chat_session:
+        if tittle is not None:
+            chat_session.title = tittle
+        if file_ids is not None:
+            chat_session.file_ids = json.dump(file_ids) if file_ids else None
+        db.commit()
+        return chat_session
+    else: return None
+
+
+def delete_chat_session(db,session_id: int, user_id: int):
+    chat_session = (db.query(ChatSession)
+                    .filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id)
+                    .first())
+
+    if chat_session:
+        db.query(Chat).filter(Chat.chat_session_id == session_id).delete()
+        db.delete(chat_session)
+        db.commit()
+        return True
+    return False
+
+
+def get_session_chats(db, session_id: int, user_id: int):
+    session = db.query(ChatSession).filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id).first()
+    if not session:
+        return []
+    return db.query(Chat).filter(Chat.chat_session_id == session_id).order_by(Chat.timestamp.asc()).all()

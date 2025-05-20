@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 import datetime
+from typing import Optional, List
 
 
 class UserLoginRequest(BaseModel):
@@ -9,6 +10,7 @@ class UserLoginRequest(BaseModel):
 
 class QueryRequest(BaseModel):
     query: str
+    chat_session_id: Optional[int] = None
 
 
 class QueryResponse(BaseModel):
@@ -35,3 +37,39 @@ class ChatHistoryResponse(BaseModel):
     class Config:
         from_attributes = True
         arbitrary_types_allowed = True
+
+
+class FileDeleteRequest(BaseModel):
+    file_ids: List[int]
+
+
+class FileDeleteResponse(BaseModel):
+    file_id: int
+    status: str
+    message: str
+
+class QueryWithFileRequest(BaseModel):
+    query: str
+    chat_session_id: int
+    file_ids: Optional[List[int]] = None
+
+
+class ChatSessionCreate(BaseModel):
+    title: Optional[str] = None
+
+
+class ChatSessionResponse(BaseModel):
+    session_id: int
+    user_id: int
+    title: Optional[str]
+    updated_at: datetime
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+        arbitrary_types_allowed = True
+
+
+class ChatSessionUpdate(BaseModel):
+    title: str
+

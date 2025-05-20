@@ -1,3 +1,4 @@
+from multiprocessing import process
 from fastapi import FastAPI, HTTPException, Depends, status, UploadFile, File
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from dotenv import load_dotenv
@@ -7,9 +8,9 @@ from typing import Optional
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
-from schemes.scheme import QueryResponse, QueryRequest, ChatHistoryResponse
+from schemes.scheme import QueryResponse, QueryRequest, ChatHistoryResponse, ChatSessionResponse, ChatSessionCreate
 from models.pydantic_model import UserCreate
-from utils.db_utils import create_user, get_db, authenticate_user, User, Chat, File as DBFile
+from utils.db_utils import create_user, get_db, authenticate_user, User, Chat, File as DBFile, get_chat_session, create_session, get_session_chats
 from utils.chat_utils import process_chat
 from typing import List
 from schemes.scheme import FileUploadResponse
@@ -108,15 +109,50 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
     return {"access_token": access_token, "token_type": "bearer"}
 
 
+@app.post("/session", response_model=ChatSessionResponse ,tags=["Chat Session"])
+async def create_chat_session(request: ChatSessionCreate, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    try:
+        session_id = create_session(db, user.user_id, request.title)
+        session = get_chat_session(db, session_id, user.user_id)
+        return session
+    except Exception as e:
+        logger.error(f"Create chat session failed: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+
+
 @app.post("/chat/", response_model=QueryResponse, tags=["Chat"])
 async def chat_endpoint(query: QueryRequest, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     try:
-        answer = process_chat(query.query)
-        chat = Chat(user_id=user.user_id, query=query.query, response=answer)
+        # Auto create chat session Id if not 
+        chat_session_id = query.chat_session_id
+        if not query.chat_session_id:
+            chat_session_id = create_session(db,user.user_id, "New Chat Session")
+            logger.info(f"Auto created chat session ID: {chat_session_id} for user {user.username}")
+        
+        # Verify session exist and belong to user
+        session = get_chat_session(db,chat_session_id,user.user_id)
+        if not session:
+            logger.error(f"Chat session not found or not owned by user {user.username}: session id={chat_session_id}")
+            raise HTTPException(status_code=404, detail="Chat session not found or not owned by user")
+        
+        # Get session chat history
+        chats = get_session_chats(db,chat_session_id,user.user_id)
+        history = [{"query":chat.query, "response":chat.response} for chat in chats]
+
+        answer = process_chat(query.query, history)
+        chat = Chat(
+            user_id=user.user_id,
+            chat_session_id=chat_session_id,
+            query=query.query,
+            response=answer
+        )
         db.add(chat)
         db.commit()
-        logger.info(f"Chat query processed for user {user.username}: {query.query}")
+        logger.info(f"Chat query processed by user {user.username}, session_id={chat_session_id}:{query.query}")
+        print(f"Answer response from llm :{answer}")
         return QueryResponse(answer=answer)
+            
+
     except Exception as e:
         logger.error(f"Chat endpoint error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -198,3 +234,5 @@ async def delete_file(file_id: int, user: User = Depends(get_current_user), db: 
     except Exception as e:
         logger.error(f"File deletion error for user {user.username}: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+

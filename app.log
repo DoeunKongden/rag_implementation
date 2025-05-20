@@ -94,3 +94,544 @@ INFO:main:Created JWT token for user: frizzbie
 INFO:main:Login successful: frizzbie
 INFO:main:Authenticated user: frizzbie
 INFO:main:Retrieved 1 files for user frizzbie
+ERROR:fastapi:Form data requires "python-multipart" to be installed. 
+You can install "python-multipart" with: 
+
+pip install python-multipart
+
+ERROR:fastapi:Form data requires "python-multipart" to be installed. 
+You can install "python-multipart" with: 
+
+pip install python-multipart
+
+INFO:main:User created: kongden
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+ERROR:main:Chat endpoint error: (psycopg2.errors.NotNullViolation) null value in column "chat_session_id" of relation "chat_tb" violates not-null constraint
+DETAIL:  Failing row contains (1, 1, null, hello deepseek, <think>
+Okay, so I need to figure out how to respond to "hello d..., 2025-05-16 08:55:16.62817).
+
+[SQL: INSERT INTO chat_tb (user_id, query, response, timestamp) VALUES (%(user_id)s, %(query)s, %(response)s, %(timestamp)s) RETURNING chat_tb.chat_id]
+[parameters: {'user_id': 1, 'query': 'hello deepseek', 'response': '<think>\nOkay, so I need to figure out how to respond to "hello deepseek." Hmm, where do I start? Well, I know that "deepseek" is a search engine, ri ... (873 characters truncated) ... that seems balanced. It acknowledges their service while being approachable.\n</think>\n\nHello [deepseek]! I\'m here and ready for your questions! 😊', 'timestamp': datetime.datetime(2025, 5, 16, 8, 55, 16, 628170)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+ERROR:main:Create chat session failed: get_chat_session() takes 2 positional arguments but 3 were given
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+ERROR:main:Create chat session failed: get_chat_session() takes 2 positional arguments but 3 were given
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+ERROR:main:Create chat session failed: (psycopg2.ProgrammingError) can't adapt type 'coroutine'
+[SQL: SELECT chat_session_tb.session_id AS chat_session_tb_session_id, chat_session_tb.user_id AS chat_session_tb_user_id, chat_session_tb.title AS chat_session_tb_title, chat_session_tb.file_ids AS chat_session_tb_file_ids, chat_session_tb.created_at AS chat_session_tb_created_at, chat_session_tb.updated_at AS chat_session_tb_updated_at 
+FROM chat_session_tb 
+WHERE chat_session_tb.session_id = %(session_id_1)s AND chat_session_tb.user_id = %(user_id_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'session_id_1': <coroutine object create_chat_session at 0x106a9fab0>, 'user_id_1': 1, 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+ERROR:main:Create chat session failed: 'Session' object has no attribute 'refrest'
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: hello this chat
+ERROR:main:Chat endpoint error: (psycopg2.errors.NotNullViolation) null value in column "chat_session_id" of relation "chat_tb" violates not-null constraint
+DETAIL:  Failing row contains (2, 1, null, hello this chat, <think>
+Okay, so I'm trying to figure out how to handle this sit..., 2025-05-19 07:39:03.343849).
+
+[SQL: INSERT INTO chat_tb (user_id, chat_session_id, query, response, timestamp) VALUES (%(user_id)s, %(chat_session_id)s, %(query)s, %(response)s, %(timestamp)s) RETURNING chat_tb.chat_id]
+[parameters: {'user_id': 1, 'chat_session_id': None, 'query': 'hello this chat', 'response': '<think>\nOkay, so I\'m trying to figure out how to handle this situation. The user greeted me with "hello this chat." Hmm, that\'s interesting becaus ... (627 characters truncated) ... c context since there\'s nothing in the history. I think that should be appropriate.\n</think>\n\nHello! It looks like we\'re having a friendly chat.', 'timestamp': datetime.datetime(2025, 5, 19, 7, 39, 3, 343849)}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated user: kongden
+ERROR:main:Chat endpoint error: cannot access local variable 'chat_session_id' where it is not associated with a value
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: Hello who is the first president of cambodia?
+INFO:main:Chat query processed by user kongden, session_id=2:Hello who is the first president of cambodia?
+ERROR:main:Chat endpoint error: BaseModel.__init__() takes 1 positional argument but 2 were given
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+ERROR:main:Chat endpoint error: name 'chat_history' is not defined
+ERROR:main:JWT decoding error: Signature has expired.
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+ERROR:main:Chat endpoint error: name 'chat_history' is not defined
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: Hello what is an LLM?
+ERROR:utils.chat_utils:Error processing chat query: "'query'"
+ERROR:main:Chat endpoint error: Error processing chat query: "'query'"
+INFO:main:Authenticated user: kongden
+ERROR:utils.chat_utils:Error processing chat query: 'str' object has no attribute 'query'
+ERROR:main:Chat endpoint error: Error processing chat query: 'str' object has no attribute 'query'
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: Hello what is an LLM?
+ERROR:utils.chat_utils:Error processing chat query: "'query'"
+ERROR:main:Chat endpoint error: Error processing chat query: "'query'"
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: What is an LLM good for?
+ERROR:utils.chat_utils:Error processing chat query: "'query'"
+ERROR:main:Chat endpoint error: Error processing chat query: "'query'"
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: What is an LLM?
+ERROR:utils.chat_utils:Error processing chat query: "'query'"
+ERROR:main:Chat endpoint error: Error processing chat query: "'query'"
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: what is statistical analysis?
+INFO:utils.chat_utils:History context: User: Hello who is the first president of cambodia? 
+ Assistant: <think>
+Okay, so I need to figure out who the first president of Cambodia was. I'm not very familiar with the country, but I'll try to recall what I know.
+
+First, I remember that Cambodia is in Southeast Asia and it's a country known for its history. I think the first president was someone from the late 20th century because they were active around then. Maybe their parents or grandparents were related to the country? I'm not sure about their names though.
+
+Wait, I think it's Phan An. Was he born in the early 1970s? That sounds plausible. He was probably raised in a family with Cambodian roots because that would make sense for someone who's been around the country. Also, his parents' names are familiar; they were both important figures or leaders themselves.
+
+I remember hearing about him being the first president before Prime Minister Thanedum and then Prince Monon. So Phan An was the president from 1975 to 1983. That seems correct because he took office in early '70s, became the first, and then later became the second president when Thanedum stepped down.
+
+I'm pretty confident now that Phan An is the first president of Cambodia. His background as a Cambodian born from the late '60s to early '70s makes sense given the time frame he was active in the country. So, putting it all together, I think Phan An is the answer.
+</think>
+
+The first president of Cambodia was Phan An, who was born during the late 1960s and became the first president in early 1975. He served until Thanedum stepped down, making him the country's first president..
+
+
+INFO:utils.chat_utils:Prompt template: input_variables=["'query'"] input_types={} partial_variables={} template='"\n            You are a helpful assistant. \n\n            Use the following conversation history for context: \n\n            [{\'query\': \'Hello who is the first president of cambodia?\', \'response\': "<think>\\nOkay, so I need to figure out who the first president of Cambodia was. I\'m not very familiar with the country, but I\'ll try to recall what I know.\\n\\nFirst, I remember that Cambodia is in Southeast Asia and it\'s a country known for its history. I think the first president was someone from the late 20th century because they were active around then. Maybe their parents or grandparents were related to the country? I\'m not sure about their names though.\\n\\nWait, I think it\'s Phan An. Was he born in the early 1970s? That sounds plausible. He was probably raised in a family with Cambodian roots because that would make sense for someone who\'s been around the country. Also, his parents\' names are familiar; they were both important figures or leaders themselves.\\n\\nI remember hearing about him being the first president before Prime Minister Thanedum and then Prince Monon. So Phan An was the president from 1975 to 1983. That seems correct because he took office in early \'70s, became the first, and then later became the second president when Thanedum stepped down.\\n\\nI\'m pretty confident now that Phan An is the first president of Cambodia. His background as a Cambodian born from the late \'60s to early \'70s makes sense given the time frame he was active in the country. So, putting it all together, I think Phan An is the answer.\\n</think>\\n\\nThe first president of Cambodia was Phan An, who was born during the late 1960s and became the first president in early 1975. He served until Thanedum stepped down, making him the country\'s first president."}] \n\n            Answer the following question concisely: what is statistical analysis?.\n            '
+ERROR:utils.chat_utils:Error processing chat query: "'query'"
+ERROR:main:Chat endpoint error: Error processing chat query: "'query'"
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: what is statistical analysis?
+INFO:utils.chat_utils:History context: User: Hello who is the first president of cambodia? 
+ Assistant: <think>
+Okay, so I need to figure out who the first president of Cambodia was. I'm not very familiar with the country, but I'll try to recall what I know.
+
+First, I remember that Cambodia is in Southeast Asia and it's a country known for its history. I think the first president was someone from the late 20th century because they were active around then. Maybe their parents or grandparents were related to the country? I'm not sure about their names though.
+
+Wait, I think it's Phan An. Was he born in the early 1970s? That sounds plausible. He was probably raised in a family with Cambodian roots because that would make sense for someone who's been around the country. Also, his parents' names are familiar; they were both important figures or leaders themselves.
+
+I remember hearing about him being the first president before Prime Minister Thanedum and then Prince Monon. So Phan An was the president from 1975 to 1983. That seems correct because he took office in early '70s, became the first, and then later became the second president when Thanedum stepped down.
+
+I'm pretty confident now that Phan An is the first president of Cambodia. His background as a Cambodian born from the late '60s to early '70s makes sense given the time frame he was active in the country. So, putting it all together, I think Phan An is the answer.
+</think>
+
+The first president of Cambodia was Phan An, who was born during the late 1960s and became the first president in early 1975. He served until Thanedum stepped down, making him the country's first president..
+
+
+INFO:utils.chat_utils:Prompt template: input_variables=["'query'"] input_types={} partial_variables={} template='"\n            You are a helpful assistant. \n\n            Use the following conversation history for context: \n\n            [{\'query\': \'Hello who is the first president of cambodia?\', \'response\': "<think>\\nOkay, so I need to figure out who the first president of Cambodia was. I\'m not very familiar with the country, but I\'ll try to recall what I know.\\n\\nFirst, I remember that Cambodia is in Southeast Asia and it\'s a country known for its history. I think the first president was someone from the late 20th century because they were active around then. Maybe their parents or grandparents were related to the country? I\'m not sure about their names though.\\n\\nWait, I think it\'s Phan An. Was he born in the early 1970s? That sounds plausible. He was probably raised in a family with Cambodian roots because that would make sense for someone who\'s been around the country. Also, his parents\' names are familiar; they were both important figures or leaders themselves.\\n\\nI remember hearing about him being the first president before Prime Minister Thanedum and then Prince Monon. So Phan An was the president from 1975 to 1983. That seems correct because he took office in early \'70s, became the first, and then later became the second president when Thanedum stepped down.\\n\\nI\'m pretty confident now that Phan An is the first president of Cambodia. His background as a Cambodian born from the late \'60s to early \'70s makes sense given the time frame he was active in the country. So, putting it all together, I think Phan An is the answer.\\n</think>\\n\\nThe first president of Cambodia was Phan An, who was born during the late 1960s and became the first president in early 1975. He served until Thanedum stepped down, making him the country\'s first president."}] \n\n            Answer the following question concisely: what is statistical analysis?.\n            '
+ERROR:utils.chat_utils:Error processing chat query: "'query'"
+ERROR:main:Chat endpoint error: Error processing chat query: "'query'"
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: what is an llm?
+INFO:utils.chat_utils:History context: User: Hello who is the first president of cambodia? 
+ Assistant: <think>
+Okay, so I need to figure out who the first president of Cambodia was. I'm not very familiar with the country, but I'll try to recall what I know.
+
+First, I remember that Cambodia is in Southeast Asia and it's a country known for its history. I think the first president was someone from the late 20th century because they were active around then. Maybe their parents or grandparents were related to the country? I'm not sure about their names though.
+
+Wait, I think it's Phan An. Was he born in the early 1970s? That sounds plausible. He was probably raised in a family with Cambodian roots because that would make sense for someone who's been around the country. Also, his parents' names are familiar; they were both important figures or leaders themselves.
+
+I remember hearing about him being the first president before Prime Minister Thanedum and then Prince Monon. So Phan An was the president from 1975 to 1983. That seems correct because he took office in early '70s, became the first, and then later became the second president when Thanedum stepped down.
+
+I'm pretty confident now that Phan An is the first president of Cambodia. His background as a Cambodian born from the late '60s to early '70s makes sense given the time frame he was active in the country. So, putting it all together, I think Phan An is the answer.
+</think>
+
+The first president of Cambodia was Phan An, who was born during the late 1960s and became the first president in early 1975. He served until Thanedum stepped down, making him the country's first president..
+INFO:utils.chat_utils:Prompt template: input_variables=['history', 'query'] input_types={} partial_variables={} template='You are a helpful assistant.\nUse the following conversation history for context (if any):\n{history}\nAnswer the following question concisely: {query}'
+INFO:main:Chat query processed by user kongden, session_id=2:what is an llm?
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: Hello what is llm ?
+INFO:utils.chat_utils:History context: User: Hello who is the first president of cambodia? 
+ Assistant: <think>
+Okay, so I need to figure out who the first president of Cambodia was. I'm not very familiar with the country, but I'll try to recall what I know.
+
+First, I remember that Cambodia is in Southeast Asia and it's a country known for its history. I think the first president was someone from the late 20th century because they were active around then. Maybe their parents or grandparents were related to the country? I'm not sure about their names though.
+
+Wait, I think it's Phan An. Was he born in the early 1970s? That sounds plausible. He was probably raised in a family with Cambodian roots because that would make sense for someone who's been around the country. Also, his parents' names are familiar; they were both important figures or leaders themselves.
+
+I remember hearing about him being the first president before Prime Minister Thanedum and then Prince Monon. So Phan An was the president from 1975 to 1983. That seems correct because he took office in early '70s, became the first, and then later became the second president when Thanedum stepped down.
+
+I'm pretty confident now that Phan An is the first president of Cambodia. His background as a Cambodian born from the late '60s to early '70s makes sense given the time frame he was active in the country. So, putting it all together, I think Phan An is the answer.
+</think>
+
+The first president of Cambodia was Phan An, who was born during the late 1960s and became the first president in early 1975. He served until Thanedum stepped down, making him the country's first president..User: what is an llm? 
+ Assistant: <think>
+Alright, let me figure out how to respond to that question about a Latin Latin Monster (LLM). 
+
+First, I need to understand what an LLM is. Since "Latin" isn't a standard spelling, I think it might be a typo or a mishearing of "linguistic." So, I'll assume the user meant "linguistic," which refers to language-related concepts.
+
+Next, I should clarify what an LLM encompasses. Typically, in linguistics, an LLM could refer to either:
+1. **Language Learning Models (LLMs)**: These are AI models designed to simulate human-level language understanding and generation.
+2. **Linguistic Structures**: Specific patterns or rules within a language that help understand its grammar and structure.
+
+Since the user is asking about this topic, I should provide a brief explanation of both possibilities but keep it clear and straightforward without diving too deep into specific types of LLMs.
+
+I also need to ensure the response is easy to understand, avoiding any technical jargon. Maybe mention how these models are used in natural language processing tasks like translation or speech recognition.
+
+Finally, I'll conclude by summarizing that an LLM can refer to either a type of AI model focused on language skills or specific linguistic patterns in languages.
+</think>
+
+An LLM refers to **Language Learning Models**, which are AI systems designed to simulate human-level language understanding and generation. These models are used in natural language processing tasks like translation, speech recognition, and text generation.
+
+Additionally, an LLM can also refer to **Linguistic Structures** or patterns that define how a language is structured, contributing to the overall understanding of language..
+INFO:utils.chat_utils:Prompt template: input_variables=['history', 'query'] input_types={} partial_variables={} template='You are a helpful assistant.\nUse the following conversation history for context (if any):\n{history}\nAnswer the following question concisely: {query}'
+INFO:utils.chat_utils:Formatted prompt: You are a helpful assistant.
+Use the following conversation history for context (if any):
+User: Hello who is the first president of cambodia? 
+ Assistant: <think>
+Okay, so I need to figure out who the first president of Cambodia was. I'm not very familiar with the country, but I'll try to recall what I know.
+
+First, I remember that Cambodia is in Southeast Asia and it's a country known for its history. I think the first president was someone from the late 20th century because they were active around then. Maybe their parents or grandparents were related to the country? I'm not sure about their names though.
+
+Wait, I think it's Phan An. Was he born in the early 1970s? That sounds plausible. He was probably raised in a family with Cambodian roots because that would make sense for someone who's been around the country. Also, his parents' names are familiar; they were both important figures or leaders themselves.
+
+I remember hearing about him being the first president before Prime Minister Thanedum and then Prince Monon. So Phan An was the president from 1975 to 1983. That seems correct because he took office in early '70s, became the first, and then later became the second president when Thanedum stepped down.
+
+I'm pretty confident now that Phan An is the first president of Cambodia. His background as a Cambodian born from the late '60s to early '70s makes sense given the time frame he was active in the country. So, putting it all together, I think Phan An is the answer.
+</think>
+
+The first president of Cambodia was Phan An, who was born during the late 1960s and became the first president in early 1975. He served until Thanedum stepped down, making him the country's first president..User: what is an llm? 
+ Assistant: <think>
+Alright, let me figure out how to respond to that question about a Latin Latin Monster (LLM). 
+
+First, I need to understand what an LLM is. Since "Latin" isn't a standard spelling, I think it might be a typo or a mishearing of "linguistic." So, I'll assume the user meant "linguistic," which refers to language-related concepts.
+
+Next, I should clarify what an LLM encompasses. Typically, in linguistics, an LLM could refer to either:
+1. **Language Learning Models (LLMs)**: These are AI models designed to simulate human-level language understanding and generation.
+2. **Linguistic Structures**: Specific patterns or rules within a language that help understand its grammar and structure.
+
+Since the user is asking about this topic, I should provide a brief explanation of both possibilities but keep it clear and straightforward without diving too deep into specific types of LLMs.
+
+I also need to ensure the response is easy to understand, avoiding any technical jargon. Maybe mention how these models are used in natural language processing tasks like translation or speech recognition.
+
+Finally, I'll conclude by summarizing that an LLM can refer to either a type of AI model focused on language skills or specific linguistic patterns in languages.
+</think>
+
+An LLM refers to **Language Learning Models**, which are AI systems designed to simulate human-level language understanding and generation. These models are used in natural language processing tasks like translation, speech recognition, and text generation.
+
+Additionally, an LLM can also refer to **Linguistic Structures** or patterns that define how a language is structured, contributing to the overall understanding of language..
+Answer the following question concisely: Hello what is llm ?
+INFO:utils.chat_utils:LLM response: <think>
+Alright, I need to figure out who the first president of Cambodia was. Let me think about this.
+
+First, I know that Cambodia is in Southeast Asia and it's known for its history. The user mentioned that the first president would be someone from the late 20th century because they were active around then.
+
+I remember hearing that Phan An was the first president. He was born in the late 1970s, which makes sense if he was active in the country during those years. His parents' names are familiar too—those were important figures or leaders themselves.
+
+Phan An became the first president from 1975 to 1983 and later took the position of Prime Minister before Thanedum stepped down in 2002, making him the country's second president after Thanedum.
+
+So, putting it all together, I conclude that Phan An is indeed the first president of Cambodia.
+</think>
+
+The first president of Cambodia was Phan An. He was born during the late 1970s and became the first president in early 1975. His leadership period included becoming the Prime Minister and later the second president before Thanedum.
+INFO:main:Chat query processed by user kongden, session_id=2:Hello what is llm ?
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: Hello what is an LLM ?
+INFO:utils.chat_utils:History context: User: Hello who is the first president of cambodia? 
+ Assistant: <think>
+Okay, so I need to figure out who the first president of Cambodia was. I'm not very familiar with the country, but I'll try to recall what I know.
+
+First, I remember that Cambodia is in Southeast Asia and it's a country known for its history. I think the first president was someone from the late 20th century because they were active around then. Maybe their parents or grandparents were related to the country? I'm not sure about their names though.
+
+Wait, I think it's Phan An. Was he born in the early 1970s? That sounds plausible. He was probably raised in a family with Cambodian roots because that would make sense for someone who's been around the country. Also, his parents' names are familiar; they were both important figures or leaders themselves.
+
+I remember hearing about him being the first president before Prime Minister Thanedum and then Prince Monon. So Phan An was the president from 1975 to 1983. That seems correct because he took office in early '70s, became the first, and then later became the second president when Thanedum stepped down.
+
+I'm pretty confident now that Phan An is the first president of Cambodia. His background as a Cambodian born from the late '60s to early '70s makes sense given the time frame he was active in the country. So, putting it all together, I think Phan An is the answer.
+</think>
+
+The first president of Cambodia was Phan An, who was born during the late 1960s and became the first president in early 1975. He served until Thanedum stepped down, making him the country's first president..User: what is an llm? 
+ Assistant: <think>
+Alright, let me figure out how to respond to that question about a Latin Latin Monster (LLM). 
+
+First, I need to understand what an LLM is. Since "Latin" isn't a standard spelling, I think it might be a typo or a mishearing of "linguistic." So, I'll assume the user meant "linguistic," which refers to language-related concepts.
+
+Next, I should clarify what an LLM encompasses. Typically, in linguistics, an LLM could refer to either:
+1. **Language Learning Models (LLMs)**: These are AI models designed to simulate human-level language understanding and generation.
+2. **Linguistic Structures**: Specific patterns or rules within a language that help understand its grammar and structure.
+
+Since the user is asking about this topic, I should provide a brief explanation of both possibilities but keep it clear and straightforward without diving too deep into specific types of LLMs.
+
+I also need to ensure the response is easy to understand, avoiding any technical jargon. Maybe mention how these models are used in natural language processing tasks like translation or speech recognition.
+
+Finally, I'll conclude by summarizing that an LLM can refer to either a type of AI model focused on language skills or specific linguistic patterns in languages.
+</think>
+
+An LLM refers to **Language Learning Models**, which are AI systems designed to simulate human-level language understanding and generation. These models are used in natural language processing tasks like translation, speech recognition, and text generation.
+
+Additionally, an LLM can also refer to **Linguistic Structures** or patterns that define how a language is structured, contributing to the overall understanding of language..User: Hello what is llm ? 
+ Assistant: <think>
+Alright, I need to figure out who the first president of Cambodia was. Let me think about this.
+
+First, I know that Cambodia is in Southeast Asia and it's known for its history. The user mentioned that the first president would be someone from the late 20th century because they were active around then.
+
+I remember hearing that Phan An was the first president. He was born in the late 1970s, which makes sense if he was active in the country during those years. His parents' names are familiar too—those were important figures or leaders themselves.
+
+Phan An became the first president from 1975 to 1983 and later took the position of Prime Minister before Thanedum stepped down in 2002, making him the country's second president after Thanedum.
+
+So, putting it all together, I conclude that Phan An is indeed the first president of Cambodia.
+</think>
+
+The first president of Cambodia was Phan An. He was born during the late 1970s and became the first president in early 1975. His leadership period included becoming the Prime Minister and later the second president before Thanedum..
+INFO:utils.chat_utils:Prompt template: input_variables=['history', 'query'] input_types={} partial_variables={} template='You are a helpful assistant.\nUse the following conversation history for context (if any):\n{history}\nAnswer the following question concisely: {query}'
+INFO:utils.chat_utils:Formatted prompt: You are a helpful assistant.
+Use the following conversation history for context (if any):
+User: Hello who is the first president of cambodia? 
+ Assistant: <think>
+Okay, so I need to figure out who the first president of Cambodia was. I'm not very familiar with the country, but I'll try to recall what I know.
+
+First, I remember that Cambodia is in Southeast Asia and it's a country known for its history. I think the first president was someone from the late 20th century because they were active around then. Maybe their parents or grandparents were related to the country? I'm not sure about their names though.
+
+Wait, I think it's Phan An. Was he born in the early 1970s? That sounds plausible. He was probably raised in a family with Cambodian roots because that would make sense for someone who's been around the country. Also, his parents' names are familiar; they were both important figures or leaders themselves.
+
+I remember hearing about him being the first president before Prime Minister Thanedum and then Prince Monon. So Phan An was the president from 1975 to 1983. That seems correct because he took office in early '70s, became the first, and then later became the second president when Thanedum stepped down.
+
+I'm pretty confident now that Phan An is the first president of Cambodia. His background as a Cambodian born from the late '60s to early '70s makes sense given the time frame he was active in the country. So, putting it all together, I think Phan An is the answer.
+</think>
+
+The first president of Cambodia was Phan An, who was born during the late 1960s and became the first president in early 1975. He served until Thanedum stepped down, making him the country's first president..User: what is an llm? 
+ Assistant: <think>
+Alright, let me figure out how to respond to that question about a Latin Latin Monster (LLM). 
+
+First, I need to understand what an LLM is. Since "Latin" isn't a standard spelling, I think it might be a typo or a mishearing of "linguistic." So, I'll assume the user meant "linguistic," which refers to language-related concepts.
+
+Next, I should clarify what an LLM encompasses. Typically, in linguistics, an LLM could refer to either:
+1. **Language Learning Models (LLMs)**: These are AI models designed to simulate human-level language understanding and generation.
+2. **Linguistic Structures**: Specific patterns or rules within a language that help understand its grammar and structure.
+
+Since the user is asking about this topic, I should provide a brief explanation of both possibilities but keep it clear and straightforward without diving too deep into specific types of LLMs.
+
+I also need to ensure the response is easy to understand, avoiding any technical jargon. Maybe mention how these models are used in natural language processing tasks like translation or speech recognition.
+
+Finally, I'll conclude by summarizing that an LLM can refer to either a type of AI model focused on language skills or specific linguistic patterns in languages.
+</think>
+
+An LLM refers to **Language Learning Models**, which are AI systems designed to simulate human-level language understanding and generation. These models are used in natural language processing tasks like translation, speech recognition, and text generation.
+
+Additionally, an LLM can also refer to **Linguistic Structures** or patterns that define how a language is structured, contributing to the overall understanding of language..User: Hello what is llm ? 
+ Assistant: <think>
+Alright, I need to figure out who the first president of Cambodia was. Let me think about this.
+
+First, I know that Cambodia is in Southeast Asia and it's known for its history. The user mentioned that the first president would be someone from the late 20th century because they were active around then.
+
+I remember hearing that Phan An was the first president. He was born in the late 1970s, which makes sense if he was active in the country during those years. His parents' names are familiar too—those were important figures or leaders themselves.
+
+Phan An became the first president from 1975 to 1983 and later took the position of Prime Minister before Thanedum stepped down in 2002, making him the country's second president after Thanedum.
+
+So, putting it all together, I conclude that Phan An is indeed the first president of Cambodia.
+</think>
+
+The first president of Cambodia was Phan An. He was born during the late 1970s and became the first president in early 1975. His leadership period included becoming the Prime Minister and later the second president before Thanedum..
+Answer the following question concisely: Hello what is an LLM ?
+INFO:utils.chat_utils:LLM response: <think>
+Alright, let me break this down step by step.
+
+First, I need to understand that "LLM" likely stands for **Language Learning Models (LLMs)**. These are AI models designed to simulate human-level language understanding and generation, used in various natural language processing tasks like translation or speech recognition.
+
+Next, I should explain what LLMs are based on known information:
+
+1. **Definition**: LLMs are AI models that can perform complex reasoning, learning from data, and generating responses at a level comparable to humans.
+2. **Applications**: They're used in various areas such as machine translation, text generation, and even in understanding conversational language.
+3. **Types**: There are different types of LLMs like **NLP (Natural Language Processing)** models, which focus on processing and generating human-like text.
+
+Then, I need to ensure clarity and avoid any technical jargon that might not be universally known.
+
+Finally, I'll summarize how these models are applied in real-world scenarios.
+</think>
+
+LLMs, or Language Learning Models, are AI systems designed to simulate human-level language understanding and generation. They are used in various natural language processing tasks like translation, text generation, and speech recognition. These models help machines understand and produce human-like responses by learning from data and patterns..
+INFO:main:Chat query processed by user kongden, session_id=2:Hello what is an LLM ?
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: What is an LLM ?
+INFO:utils.chat_utils:History context: 
+INFO:utils.chat_utils:Prompt template: input_variables=['history', 'query'] input_types={} partial_variables={} template='You are a helpful assistant.\nUse the following conversation history for context (if any):\n{history}\nAnswer the following question concisely: {query}'
+INFO:utils.chat_utils:Formatted prompt: You are a helpful assistant.
+Use the following conversation history for context (if any):
+
+Answer the following question concisely: What is an LLM ?
+INFO:utils.chat_utils:LLM response: <think>
+Okay, so I need to figure out what an LLM is. Let me start by breaking down the term. "LLM" stands for something... Hmm, isn't that a common abbreviation? Oh, right! LLM stands for Large Language Model. So it's a model of language.
+
+Wait, how does this work? If I'm trying to understand what an LLM is, maybe I should think about how these models are used. They're probably trained on a vast amount of text data, right? So they can learn patterns and rules in the language they're trained on.
+
+I remember hearing that LLMs are good at generating responses, like answering questions or providing information. Maybe they also do more complex tasks like summarizing documents or even creating summaries from images. That sounds interesting because it shows their versatility.
+
+Another thing I'm thinking about is how big these models typically are. Are they really large? I think they probably have a lot of parameters to handle the volume of data, which makes them capable of learning various patterns and understanding different contexts.
+
+I should also consider if LLMs can adapt or improve over time. Yes, that's right! As more data comes in, the models get better at their tasks. That means they can handle not just simple answers but also complex reasoning and decision-making based on the input provided.
+
+So putting it all together, an LLM is a machine learning model designed to understand and generate human-level language. They're used for generating responses, summarizing data, even from images, and they get better as they receive more training data over time.
+</think>
+
+An LLM stands for Large Language Model, which is a type of machine learning model designed to understand and generate human-level language. These models are trained on vast amounts of text data and can perform tasks such as answering questions, providing information, summarizing documents, and even generating images from textual descriptions. They are capable of handling complex patterns and rules in the language they process. As training data increases, these models become more proficient at their tasks, allowing them to answer increasingly sophisticated questions and produce nuanced responses.
+INFO:main:Chat query processed by user kongden, session_id=3:What is an LLM ?
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: What is an LLM use for in now day work?
+ERROR:utils.chat_utils:Error processing chat query: list index out of range
+ERROR:main:Chat endpoint error: Error processing chat query: list index out of range
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: What is an LLM use for in now day work?
+INFO:utils.chat_utils:History context: User: What is an LLM ?
+Assistant: <think>
+Okay, so I need to figure out what an LLM is. Let me start by breaking down the term. "LLM" stands for something... Hmm, isn't that a common abbreviation? Oh, right! LLM stands for Large Language Model. So it's a model of language.
+
+Wait, how does this work? If I'm trying to understand what an LLM is, maybe I should think about how these models are used. They're probably trained on a vast amount of text data, right? So they can learn patterns and rules in the language they're trained on.
+
+I remember hearing that LLMs are good at generating responses, like answering questions or providing information. Maybe they also do more complex tasks like summarizing documents or even creating summaries from images. That sounds interesting because it shows their versatility.
+
+Another thing I'm thinking about is how big these models typically are. Are they really large? I think they probably have a lot of parameters to handle the volume of data, which makes them capable of learning various patterns and understanding different contexts.
+
+I should also consider if LLMs can adapt or improve over time. Yes, that's right! As more data comes in, the models get better at their tasks. That means they can handle not just simple answers but also complex reasoning and decision-making based on the input provided.
+
+So putting it all together, an LLM is a machine learning model designed to understand and generate human-level language. They're used for generating responses, summarizing data, even from images, and they get better as they receive more training data over time.
+</think>
+
+An LLM stands for Large Language Model, which is a type of machine learning model designed to understand and generate human-level language. These models are trained on vast amounts of text data and can perform tasks such as answering questions, providing information, summarizing documents, and even generating images from textual descriptions. They are capable of handling complex patterns and rules in the language they process. As training data increases, these models become more proficient at their tasks, allowing them to answer increasingly sophisticated questions and produce nuanced responses.
+
+
+INFO:utils.chat_utils:Prompt template: input_variables=['history', 'query'] input_types={} partial_variables={} template='You are a helpful assistant.\nUse the following conversation history for context (if any):\n{history}\nAnswer the following question concisely: {query}'
+INFO:utils.chat_utils:Formatted prompt: You are a helpful assistant.
+Use the following conversation history for context (if any):
+User: What is an LLM ?
+Assistant: <think>
+Okay, so I need to figure out what an LLM is. Let me start by breaking down the term. "LLM" stands for something... Hmm, isn't that a common abbreviation? Oh, right! LLM stands for Large Language Model. So it's a model of language.
+
+Wait, how does this work? If I'm trying to understand what an LLM is, maybe I should think about how these models are used. They're probably trained on a vast amount of text data, right? So they can learn patterns and rules in the language they're trained on.
+
+I remember hearing that LLMs are good at generating responses, like answering questions or providing information. Maybe they also do more complex tasks like summarizing documents or even creating summaries from images. That sounds interesting because it shows their versatility.
+
+Another thing I'm thinking about is how big these models typically are. Are they really large? I think they probably have a lot of parameters to handle the volume of data, which makes them capable of learning various patterns and understanding different contexts.
+
+I should also consider if LLMs can adapt or improve over time. Yes, that's right! As more data comes in, the models get better at their tasks. That means they can handle not just simple answers but also complex reasoning and decision-making based on the input provided.
+
+So putting it all together, an LLM is a machine learning model designed to understand and generate human-level language. They're used for generating responses, summarizing data, even from images, and they get better as they receive more training data over time.
+</think>
+
+An LLM stands for Large Language Model, which is a type of machine learning model designed to understand and generate human-level language. These models are trained on vast amounts of text data and can perform tasks such as answering questions, providing information, summarizing documents, and even generating images from textual descriptions. They are capable of handling complex patterns and rules in the language they process. As training data increases, these models become more proficient at their tasks, allowing them to answer increasingly sophisticated questions and produce nuanced responses.
+
+
+Answer the following question concisely: What is an LLM use for in now day work?
+INFO:utils.chat_utils:LLM response: <think>
+Okay, so I need to figure out how to explain what LLMs are. Let me start by recalling the term "LLM." It stands for Large Language Model. These models are designed to understand and generate human-level language.
+
+They are used extensively in today's world for a variety of tasks. They can answer questions, provide information, summarize data, even create images from text descriptions, and handle complex reasoning and decision-making based on the input provided. As more training data is available, these models improve their performance, making them capable of generating increasingly sophisticated responses.
+
+In summary, LLMs are powerful tools in machine learning that enable machines to understand and produce human language effectively.
+</think>
+
+An LLM stands for Large Language Model, a machine learning model designed to understand and generate human-level language. These models are used today for tasks like answering questions, providing information, summarizing data, and even generating images from textual descriptions. As they receive more training data, their capabilities improve, allowing them to answer increasingly complex questions and produce nuanced responses effectively.
+INFO:main:Chat query processed by user kongden, session_id=3:What is an LLM use for in now day work?
+ERROR:main:Chat endpoint error: BaseModel.__init__() takes 1 positional argument but 2 were given
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: Hello
+INFO:utils.chat_utils:History context: 
+INFO:utils.chat_utils:Prompt template: input_variables=['history', 'query'] input_types={} partial_variables={} template='You are a helpful assistant.\nUse the following conversation history for context (if any):\n{history}\nAnswer the following question concisely: {query}'
+INFO:utils.chat_utils:Formatted prompt: You are a helpful assistant.
+Use the following conversation history for context (if any):
+
+Answer the following question concisely: Hello
+INFO:utils.chat_utils:LLM response: <think>
+Okay, so I just received this message from someone asking me to respond. It says, "Hello." Hmm, that's pretty straightforward. The user is just greeting me and inviting my help.
+
+I should consider why they're asking this. Maybe they need some information or assistance with something else. But since it's a simple hello, the response shouldn't be too complicated.
+
+I could say, "Hello! How can I assist you today?" That seems to fit right in and acknowledges their greeting while inviting them to provide more details about what they need help with.
+</think>
+
+Hello! How can I assist you today?
+INFO:main:Chat query processed by user kongden, session_id=2:Hello
+ERROR:main:Chat endpoint error: BaseModel.__init__() takes 1 positional argument but 2 were given
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: Hello.
+INFO:utils.chat_utils:History context: 
+INFO:utils.chat_utils:Prompt template: input_variables=['history', 'query'] input_types={} partial_variables={} template='You are a helpful assistant.\nUse the following conversation history for context (if any):\n{history}\nAnswer the following question concisely: {query}'
+INFO:utils.chat_utils:Formatted prompt: You are a helpful assistant.
+Use the following conversation history for context (if any):
+
+Answer the following question concisely: Hello.
+INFO:utils.chat_utils:LLM response: <think>
+Okay, so I need to answer this question: "Hello." The user just said that and didn't ask anything else. Hmm, I think they're checking if I responded correctly. But maybe they want me to provide another example.
+
+Wait, in the previous interaction, I answered with a friendly greeting like "Hello! How can I assist you today?" That sounds good. So for their question, I should respond similarly and keep it simple. Maybe I'll just say "Hello!" and let them know that's my response.
+</think>
+
+Hello!
+INFO:main:Chat query processed by user kongden, session_id=3:Hello.
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:utils.chat_utils:Processing chat query: Hello
+INFO:utils.chat_utils:History context: User: Hello.
+Assistant: <think>
+Okay, so I need to answer this question: "Hello." The user just said that and didn't ask anything else. Hmm, I think they're checking if I responded correctly. But maybe they want me to provide another example.
+
+Wait, in the previous interaction, I answered with a friendly greeting like "Hello! How can I assist you today?" That sounds good. So for their question, I should respond similarly and keep it simple. Maybe I'll just say "Hello!" and let them know that's my response.
+</think>
+
+Hello!
+
+
+INFO:utils.chat_utils:Prompt template: input_variables=['history', 'query'] input_types={} partial_variables={} template='You are a helpful assistant.\nUse the following conversation history for context (if any):\n{history}\nAnswer the following question concisely: {query}'
+INFO:utils.chat_utils:Formatted prompt: You are a helpful assistant.
+Use the following conversation history for context (if any):
+User: Hello.
+Assistant: <think>
+Okay, so I need to answer this question: "Hello." The user just said that and didn't ask anything else. Hmm, I think they're checking if I responded correctly. But maybe they want me to provide another example.
+
+Wait, in the previous interaction, I answered with a friendly greeting like "Hello! How can I assist you today?" That sounds good. So for their question, I should respond similarly and keep it simple. Maybe I'll just say "Hello!" and let them know that's my response.
+</think>
+
+Hello!
+
+
+Answer the following question concisely: Hello
+INFO:utils.chat_utils:LLM response: <think>
+Alright, so I'm trying to figure out how to answer this question. The user just said, "Hello," and didn't provide a specific prompt or problem they need help with. 
+
+First, I should acknowledge their greeting to show that I understand and am responding correctly. Then, since no further instructions were given, it would be appropriate to keep the conversation going without adding any additional information.
+
+So, my response should simply be "Hello!" followed by an explanation to make sure I'm clear about what I do next. That way, the user knows exactly how I'll respond moving forward.
+</think>
+
+Hello! 
+
+I'd be happy to help with whatever you need. How can I assist you today?
+INFO:main:Chat query processed by user kongden, session_id=3:Hello
