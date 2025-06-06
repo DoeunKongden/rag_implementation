@@ -1,13 +1,25 @@
+import datetime
 import json
 import uuid
+from datetime import timedelta
+from typing import List
 
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime, JSON
+import bcrypt
+from sqlalchemy import (
+    JSON,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    create_engine,
+    null,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import bcrypt
-import datetime
-from datetime import  timedelta
-from typing import List
+import logging
+
+logger = logging.getLogger(__name__)
 
 DATABASE_URL = "postgresql://postgres:DeN112233@localhost:5432/postgres"
 engine = create_engine(DATABASE_URL)
@@ -30,8 +42,11 @@ class ChatSession(Base):
     user_id = Column(Integer, ForeignKey("user_tb.user_id"))
     title = Column(String, nullable=True)
     file_ids = Column(JSON, nullable=True)
+    session_type = Column(String, nullable=False, default="normal")
     created_at = Column(DateTime, default=datetime.datetime.now())
-    updated_at = Column(DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
+    updated_at = Column(
+        DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now()
+    )
 
 
 class Chat(Base):
@@ -70,12 +85,12 @@ def get_db():
 
 
 def create_user(db, user):
-    hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
+    hashed_password = bcrypt.hashpw(user.password.encode("utf-8"), bcrypt.gensalt())
     db_user = User(
         username=user.username,
-        user_password=hashed_password.decode('utf-8'),
+        user_password=hashed_password.decode("utf-8"),
         profile_img=user.profile_img,
-        user_bio=user.user_bio
+        user_bio=user.user_bio,
     )
     db.add(db_user)
     db.commit()
@@ -87,7 +102,7 @@ def authenticate_user(db, username: str, password: str):
     user = db.query(User).filter(User.username == username).first()
     if not user:
         return False
-    if not bcrypt.checkpw(password.encode('utf-8'), user.user_password.encode('utf-8')):
+    if not bcrypt.checkpw(password.encode("utf-8"), user.user_password.encode("utf-8")):
         return False
     return user
 
@@ -95,17 +110,13 @@ def authenticate_user(db, username: str, password: str):
 def create_session(db, user_id: int, expire_in_minute: int = 30) -> str:
     session_id = str(uuid.uuid4())
     expired_at = datetime.datetime.now() + timedelta(minutes=expire_in_minute)
-    db_session = Session(
-        session_id=session_id,
-        user_id=user_id,
-        expired_at=expired_at
-    )
+    db_session = Session(session_id=session_id, user_id=user_id, expired_at=expired_at)
     db.add(db_session)
     db.commit()
     return session_id
 
 
-def get_user_by_session(db,session_id: str):
+def get_user_by_session(db, session_id: str):
     session = db.query(Session).filter(Session.session_id == session_id).first()
     if not session:
         return None
@@ -123,27 +134,46 @@ def delete_session(db, session_id):
         db.commit()
 
 
-def create_session(db, user_id: int, title: str, file_ids: list = None) -> str:
-    db_session = ChatSession(
-        user_id = user_id,
-        title = title,
-        file_ids = json.dump(file_ids) if file_ids else None
-    )
+async def create_chat_session(
+    db, user_id: int, title: str = None, file_ids: List[int] = None
+) -> int:
+    try:
+        session_type = "file-based" if file_ids else "normal"
+        db_session = ChatSession(
+            user_id=user_id,
+            title=title,
+            file_ids=json.dumps(file_ids) if file_ids else None,
+            session_type=session_type,
+        )
 
-    db.add(db_session)
-    db.commit()
-    db.refresh(db_session)
-    return db_session.session_id
+        db.add(db_session)
+        db.commit()
+        db.refresh(db_session)
+        logger.info(
+            f"Create sesision type: {session_type} of chat session: {db_session.session_id}"
+        )
+        return db_session.session_id
+    except Exception as e:
+        logger.error(f"Fail to create chat session: {e}")
+        raise e
 
 
 def get_chat_session(db, session_id: int, user_id: int):
-    return db.query(ChatSession).filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id).first()
+    return (
+        db.query(ChatSession)
+        .filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id)
+        .first()
+    )
 
 
-def update_chat_session(db, user_id: int, session_id: int, tittle: str, file_ids: list = None):
-    chat_session = (db.query(ChatSession)
-                    .filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id)
-                    .first())
+def update_chat_session(
+    db, user_id: int, session_id: int, tittle: str, file_ids: list = None
+):
+    chat_session = (
+        db.query(ChatSession)
+        .filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id)
+        .first()
+    )
     if chat_session:
         if tittle is not None:
             chat_session.title = tittle
@@ -151,13 +181,16 @@ def update_chat_session(db, user_id: int, session_id: int, tittle: str, file_ids
             chat_session.file_ids = json.dump(file_ids) if file_ids else None
         db.commit()
         return chat_session
-    else: return None
+    else:
+        return None
 
 
-def delete_chat_session(db,session_id: int, user_id: int):
-    chat_session = (db.query(ChatSession)
-                    .filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id)
-                    .first())
+def delete_chat_session(db, session_id: int, user_id: int):
+    chat_session = (
+        db.query(ChatSession)
+        .filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id)
+        .first()
+    )
 
     if chat_session:
         db.query(Chat).filter(Chat.chat_session_id == session_id).delete()
@@ -168,7 +201,16 @@ def delete_chat_session(db,session_id: int, user_id: int):
 
 
 def get_session_chats(db, session_id: int, user_id: int):
-    session = db.query(ChatSession).filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id).first()
+    session = (
+        db.query(ChatSession)
+        .filter(ChatSession.session_id == session_id, ChatSession.user_id == user_id)
+        .first()
+    )
     if not session:
         return []
-    return db.query(Chat).filter(Chat.chat_session_id == session_id).order_by(Chat.timestamp.asc()).all()
+    return (
+        db.query(Chat)
+        .filter(Chat.chat_session_id == session_id)
+        .order_by(Chat.timestamp.asc())
+        .all()
+    )

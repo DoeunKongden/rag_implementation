@@ -56,12 +56,14 @@ class QueryWithFileRequest(BaseModel):
 
 class ChatSessionCreate(BaseModel):
     title: Optional[str] = None
+    file_ids: Optional[List[int]] = None
 
 
 class ChatSessionResponse(BaseModel):
     session_id: int
     user_id: int
     title: Optional[str]
+    session_type: str
     updated_at: datetime
     created_at: datetime
 
