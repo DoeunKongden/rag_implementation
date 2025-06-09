@@ -66,6 +66,7 @@ class File(Base):
     file_name = Column(String)
     file_path = Column(String)
     upload_timestamp = Column(DateTime, default=datetime.datetime.utcnow())
+    faiss_index_path = Column(String, nullable=True)
 
 
 class Session(Base):
@@ -178,7 +179,7 @@ def update_chat_session(
         if tittle is not None:
             chat_session.title = tittle
         if file_ids is not None:
-            chat_session.file_ids = json.dump(file_ids) if file_ids else None
+            chat_session.file_ids = json.dumps(file_ids) if file_ids else None
         db.commit()
         return chat_session
     else:

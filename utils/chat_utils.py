@@ -1,14 +1,15 @@
-from csv import reader
-from inspect import cleandoc
-from multiprocessing import Value
+import os
 import re
 from docx import Document
 from langchain_community.chat_models import ChatOllama
+from langchain_community.embeddings import OllamaEmbeddings
 from langchain.prompts import PromptTemplate
 import logging
 from typing import List
 import PyPDF2
 from langchain_core.callbacks import file
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.vectorstores import FAISS, VectorStore
 
 
 # Setup app logger
@@ -16,6 +17,9 @@ logger = logging.getLogger(__name__)
 
 # Langchain Ollama setup
 llm = ChatOllama(model="deepseek-r1:1.5b")
+
+# Embedding model
+embedding = OllamaEmbeddings(model="tazarov/all-minilm-l6-v2-f32")
 
 
 def clean_llm_response(response: str) -> str:
@@ -72,7 +76,7 @@ def extract_file_content(file_path: str):
             return text
 
         else:
-            logger.error(f"Error extracting content from file path : {file_path}")
+            logger.error(f"Err extracting content from file path : {file_path}")
             return ""
 
     except Exception as e:
@@ -80,6 +84,29 @@ def extract_file_content(file_path: str):
             f"Error extracting content from file : {file_path} error : {str(e)}"
         )
         return ""
+
+
+def store_document_chunk(content: str, faiss_index_path: str) -> None:
+    """
+    Split document content into chunk and store embedding in FAISS
+    """
+    try:
+        if not content:
+            logger.error("No content to store in FAISS")
+            return
+        splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+        chunks = splitter.split_text(content)
+
+        if not chunks:
+            logger.warning("No chunk generated from contents")
+            return
+
+        vector_store = FAISS.from_texts(chunks, embedding)
+        vector_store.save_local(faiss_index_path)
+        logger.info(f"Stored {len(chunks)} chunks in FAISS index at {faiss_index_path}")
+    except Exception as e:
+        logger.error(f"Error storing documnent chunk in FAISS: {str(e)}")
+        raise
 
 
 def process_chat(query: str, history: List = None, file_paths: List[str] = None) -> str:
@@ -120,10 +147,12 @@ def process_chat(query: str, history: List = None, file_paths: List[str] = None)
         file_content = ""
         if file_paths:
             for file_path in file_paths:
-                content = extract_file_content(file_path)
-                if content:
-                    file_content += f"\nFile content from {file_path}:\n{content}\n"
-            logger.info(f"File content included: {file_content}")
+                faiss_index_path = os.path.splitext(file_path)[0] + ".faiss"
+                chunks = retreive_relavent_chunk(query,faiss_index_path)
+                if chunks:
+                    file_content += f"\nRelevant content from {file_path}:\n{''.join(chunks)}\n"
+                else:
+                    logger.warning(f"No relevant content retreived for {file_path}")
 
         # Create a prompt with context
         prompt_template = PromptTemplate(
@@ -139,7 +168,9 @@ def process_chat(query: str, history: List = None, file_paths: List[str] = None)
         )
 
         logger.info(f"Prompt template: {prompt_template}")
-        format_prompt = prompt_template.format(history=history_text, file_content=file_content,query=query)
+        format_prompt = prompt_template.format(
+            history=history_text, file_content=file_content, query=query
+        )
         logger.info(f"Formatted prompt: {format_prompt}")
 
         response = llm.invoke(format_prompt)
@@ -163,3 +194,19 @@ def process_chat(query: str, history: List = None, file_paths: List[str] = None)
     except Exception as e:
         logger.error(f"Error processing chat query: {str(e)}")
         raise Exception(f"Error processing chat query: {str(e)}")
+
+
+def retreive_relavent_chunk(query:str, faiss_index_path:str, top_k: int=3) -> None:
+    """
+    Retreive the Top k most relavent document chunks from FAISS
+    """
+    try:
+        if not os.path.exists(faiss_index_path):
+            logger.warning("FAISS index path not found")
+            return []
+        vector_store = FAISS.load_local(faiss_index_path, embedding, allow_dangerous_deserialization=True)
+        docs = vector_store.similarity_search(query,k=top_k)
+        logger.debug(f"Retrieve {len(docs)} relevant chunk for query: {query}")
+    except Exception as e:
+        logger.error(f"Error retreiving chunk from FAISS : {str(e)}")
+        return []

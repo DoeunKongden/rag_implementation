@@ -3,31 +3,35 @@ import os
 import shutil
 import uuid
 from datetime import datetime, timedelta
-from multiprocessing import process
 from typing import List, Optional
 
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, File, HTTPException, UploadFile, responses, status
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
-from langchain_core.messages import chat
-from langchain_core.runnables import history
-from sqlalchemy.orm import Session, query, session
+from sqlalchemy.orm import Session, session
+from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND
+from urllib3 import response
 
 from models.pydantic_model import UserCreate
 from schemes.scheme import (
-    ChatHistoryResponse,
+    ChatResponse,
     ChatSessionCreate,
     ChatSessionResponse,
+    ChatSessionUpdate,
     FileUploadResponse,
     QueryRequest,
     QueryResponse,
     QueryWithFileRequest,
+    UserResponse,
 )
-from utils.chat_utils import process_chat
+from utils.chat_utils import extract_file_content, process_chat, store_document_chunk
 from utils.db_utils import (
     Chat,
     ChatSession,
+    delete_chat_session,
+    delete_session,
+    update_chat_session,
 )
 from utils.db_utils import File as DBFile
 from utils.db_utils import (
@@ -60,6 +64,10 @@ ACCESS_TOKEN_EXPIRE_MINUTE = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTE", 30))
 # Document Direction
 DOCUMENT_DIR = "./uploaded_file"
 os.makedirs(DOCUMENT_DIR, exist_ok=True)
+
+# FAISS Direction
+FAISS_INDEX_DIR = "./faiss_indexes"
+os.makedirs(FAISS_INDEX_DIR, exist_ok=True)
 
 if not os.getenv("JWT_SECRET_KEY"):
     logger.warning("JWT_SECRET_KEY not set in environment, using default")
@@ -141,6 +149,68 @@ async def login(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
+@app.get("/user", response_model=UserResponse, tags=["User"])
+async def get_user(user: User = Depends(get_current_user)):
+    try:
+        logger.info(f"User profile retrieved for {user.username}")
+        return UserResponse(
+            user_id=user.user_id,
+            username=user.username,
+            user_bio=user.user_bio,
+            profile_img=user.profile_img,
+        )
+    except Exception as e:
+        logger.error(f"Error retrieving user profile for {user.username}: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/logout", status_code=HTTP_204_NO_CONTENT, tags=["Authentication"])
+async def logout(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    try:
+        delete_session(db, token)
+        logger.info(f"Session {token} logged out")
+        return None
+    except Exception as e:
+        logger.error(f"Logout error for token {token}: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get(
+    "/session/{session_id}/chat",
+    response_model=List[ChatResponse],
+    tags=["Chat Session"],
+    summary="Gets chat for a session",
+)
+async def get_session_chat_endpoint(
+    session_id: int,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        chats = get_session_chats(db=db, session_id=session_id, user_id=user.user_id)
+        if not chats:
+            logger.warning(
+                f"No chats found for session {session_id}, user {user.username}"
+            )
+        logger.info(
+            f"Retrieved {len(chats)} chats for session {session_id}, user {user.username}"
+        )
+        return [
+            ChatResponse(
+                chat_id=chat.chat_id,
+                query=chat.query,
+                response=chat.response,
+                timestamp=chat.timestamp,
+            )
+            for chat in chats
+        ]
+    except Exception as e:
+        logger.error(
+            f"Error retreiving chat for session {session_id}. For user: {user.username}"
+        )
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/session", response_model=ChatSessionResponse, tags=["Chat Session"])
 async def create_chat_session_endpoint(
     request: ChatSessionCreate,
@@ -211,6 +281,41 @@ async def create_chat_session_endpoint(
         raise HTTPException(status_code=400, detail=str(e))
 
 
+@app.put(
+    "/session/{session_id}",
+    response_model=ChatSessionResponse,
+    tags=["Chat Session"],
+    summary="Update chat session",
+)
+async def update_chat_session_endpoint(
+    session_id: int,
+    request: ChatSessionUpdate,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        session = update_chat_session(
+            db, user.user_id, session_id, request.title, request.file_ids
+        )
+        if not session:
+            logger.error(f"Session {session_id} not found for user {user.username}")
+            raise HTTPException(status_code=404, detail="Chat session not found")
+        logger.info(f"Session {session_id} updated by user {user.username}")
+        return ChatSessionResponse(
+            session_id=session.session_id,
+            user_id=session.user_id,
+            title=session.title,
+            created_at=session.created_at,
+            updated_at=session.updated_at,
+            session_type=session.session_type,
+        )
+    except Exception as e:
+        logger.error(
+            f"Error updating session {session_id} for user {user.username}: {str(e)}"
+        )
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get(
     "/sessions",
     response_model=List[ChatSessionResponse],
@@ -245,6 +350,40 @@ async def get_all_chat_sessions(
         logger.error(
             f"Failed to retrieve chat session for user {user.username} : {str(e)}"
         )
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete(
+    "/session/{session_id}",
+    response_model=None,
+    tags=["Chat Session"],
+    summary="Delete Chat Session By Id",
+)
+async def delete_chat_session_by_id(
+    session_id: int,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        # Attempt to delete the chat session
+        delete_success = delete_chat_session(db, session_id, user.user_id)
+        if not delete_success:
+            logger.error(f"Chat session ID was not found for user:{user.username}")
+            raise HTTPException(
+                status_code=HTTP_404_NOT_FOUND,
+                detail="Chat session not found or you don't have permission to delete it",
+            )
+
+        logger.info(
+            f"Chat sessiod:{session_id} has been deleted by user:{user.username}"
+        )
+        return None
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+        logger.error(f"Chat session delete error for user:{user.username}:{session_id}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -303,54 +442,56 @@ async def process_query_with_file(
         chat_session = get_chat_session(db, request.chat_session_id, user.user_id)
         if not chat_session:
             logger.error(
-                f"Chat session not found for user:{user.username} session:{request.chat_session_id}"
+                f"Chat session not found for user {user.username}, session {request.chat_session_id}"
             )
-            return QueryResponse(answer="Error: Chat session not found")
+            raise HTTPException(status_code=404, detail="Chat session not found")
 
-        # Fetch Chat history
-        history = []
-        chats = get_session_chats(db, request.chat_session_id, user.user_id)
-        history = [{"query": chat.query, "response": chat.response} for chat in chats]
-
+        # Fetch chat history
+        history = [
+            {"query": chat.query, "response": chat.response}
+            for chat in get_session_chats(db, request.chat_session_id, user.user_id)
+        ]
         logger.info(
-            f"Retrieved {len(history)} chat history item from chat session {request.chat_session_id} , user:{user.username}"
+            f"Retrieved {len(history)} chat history items for session {request.chat_session_id}, user {user.username}"
         )
 
-        # Fetch file path if file id is provided
+        # Fetch file paths if file_ids are provided
         file_paths = []
         if request.file_ids:
-            files = (
-                db.query(DBFile)
-                .filter(
-                    DBFile.file_id.in_(request.file_ids), DBFile.user_id == user.user_id
-                )
-                .all()
-            )
-            # Map the each file path got from database into the array of file path
-            file_paths = [file.file_path for file in files]
+            if len(request.file_ids) > 5:
+                raise HTTPException(status_code=400, detail="Too many files provided (max 5)")
+            files = db.query(DBFile).filter(
+                DBFile.file_id.in_(request.file_ids), DBFile.user_id == user.user_id
+            ).all()
+            file_paths = [file.file_path for file in files if file.faiss_index_path]
             if len(file_paths) != len(request.file_ids):
-                logger.warning(f"Some files_id are invalid for user {user.username}:{request.file_ids}")
-            
-            logger.info(f"Retrieved {len(file_paths)} file path for user {user.username}")
+                logger.error(f"Invalid or missing FAISS indexes for user {user.username}: {request.file_ids}")
+                raise HTTPException(
+                    status_code=400, 
+                    detail="Some file IDs are invalid or lack FAISS indexes"
+                )
+            logger.info(f"Retrieved {len(file_paths)} file paths for user {user.username}")
 
-            # Process the query with file with the LLM
-            resposne = process_chat(request.query, history, file_paths)
+        # Process the query with LLM
+        response = process_chat(request.query, history, file_paths)
 
-            # Save the query with the LLM into the ChatTable
-            db_chat = Chat(
-                user_id=user.user_id,
-                chat_session_id=request.chat_session_id,
-                query=request.query,
-                response=resposne,
-            )
-            db.add(db_chat)
-            db.commit()
-            logger.info(f"Query with file processed for user {user.username}:{request.query}")
-            return QueryResponse(answer=resposne)
+        # Save to Chat table
+        db_chat = Chat(
+            user_id=user.user_id,
+            chat_session_id=request.chat_session_id,
+            query=request.query,
+            response=response,
+        )
+        db.add(db_chat)
+        db.commit()
+        logger.info(f"Query with files processed for user {user.username}: {request.query}")
+        return QueryResponse(answer=response)
 
+    except HTTPException:
+        raise
     except Exception as e:
-        print("error", str(e))
-
+        logger.error(f"Processing query with file failed for user {user.username}: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/upload", response_model=FileUploadResponse, tags=["Files"])
 async def upload_file(
@@ -371,14 +512,25 @@ async def upload_file(
         file_extension = os.path.splitext(file.filename)[1]
         unique_filename = f"{user.user_id}_{uuid.uuid4()}{file_extension}"
         filepath = os.path.join(DOCUMENT_DIR, unique_filename)
+        faiss_index_path = os.path.join(FAISS_INDEX_DIR, f"{unique_filename}.faiss")
 
         # Save file
         with open(filepath, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
+        content = extract_file_content(filepath)
+
+        if not content:
+            logger.error(f"No content extracted from filename: {file.filename}")
+        else:
+            store_document_chunk(content, faiss_index_path)
+
         # Save the DB metadata to the database
         db_file = DBFile(
-            user_id=user.user_id, file_name=file.filename, file_path=filepath
+            user_id=user.user_id,
+            file_name=file.filename,
+            file_path=filepath,
+            faiss_index_path=faiss_index_path if content else None,
         )
 
         db.add(db_file)

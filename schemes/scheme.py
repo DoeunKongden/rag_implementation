@@ -48,6 +48,7 @@ class FileDeleteResponse(BaseModel):
     status: str
     message: str
 
+
 class QueryWithFileRequest(BaseModel):
     query: str
     chat_session_id: int
@@ -72,6 +73,25 @@ class ChatSessionResponse(BaseModel):
         arbitrary_types_allowed = True
 
 
-class ChatSessionUpdate(BaseModel):
-    title: str
+class ChatResponse(BaseModel):
+    chat_id: int
+    query: str
+    response: str
+    timestamp: datetime
 
+    class Config:
+        from_attributes = True
+        arbitrary_types_allowed = True
+
+
+class ChatSessionUpdate(BaseModel):
+    title: Optional[str] = None
+    file_ids: Optional[List[int]] = None
+
+
+
+class UserResponse(BaseModel):
+    user_id: int
+    username: str
+    user_bio: Optional[str]
+    profile_img: Optional[str]

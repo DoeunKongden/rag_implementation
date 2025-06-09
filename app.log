@@ -1014,3 +1014,123 @@ Putting this together, KbaeNak is a web-based platform designed to assist indivi
 
 KbaeNak is an online repair service platform aimed at helping users find reliable repair spots quickly and efficiently. It offers features like newsfeed with posts, create post functionality for technical issues, notifications, chat support, a PWA feature, near-by services suggestion, live location sharing via image and voice submissions, and the Progressive Web App (PWA).
 INFO:main:Query with file processed for user kongden:what is KbaeNak?
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 3 sessions for user kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Chat sessiod:8 has been deleted by user:kongden
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 2 sessions for user kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 2 chats for session 9, user kongden
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+ERROR:main:Error updating session 9 for user kongden: dump() missing 1 required positional argument: 'fp'
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 2 files for user kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+ERROR:main:Error updating session 9 for user kongden: dump() missing 1 required positional argument: 'fp'
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:User profile retrieved for kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+ERROR:main:Error updating session 9 for user kongden: dump() missing 1 required positional argument: 'fp'
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 2 sessions for user kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Session 9 updated by user kongden
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+ERROR:utils.chat_utils:Error extracting content from file : ./uploaded_file/1_ef8441a3-5ef2-49af-a1eb-cef1c2e7f717.doc error : file './uploaded_file/1_ef8441a3-5ef2-49af-a1eb-cef1c2e7f717.doc' is not a Word file, content type is 'application/vnd.openxmlformats-officedocument.themeManager+xml'
+ERROR:main:No content extracted from filename: Research Paper Format.doc
+INFO:main:File uploaded by user kongden: Research Paper Format.doc as 1_ef8441a3-5ef2-49af-a1eb-cef1c2e7f717.doc
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:faiss.loader:Loading faiss.
+INFO:faiss.loader:Successfully loaded faiss.
+INFO:faiss:Failed to load GPU Faiss: name 'GpuIndexIVFFlat' is not defined. Will not load constructor refs for GPU indexes. This is only an error if you're trying to use GPU Faiss.
+INFO:utils.chat_utils:Stored 29 chunks in FAISS index at ./faiss_indexes/1_3d5e144b-6828-4182-8a2d-d68752422db0.docx.faiss
+INFO:main:File uploaded by user kongden: 3_Technical Report_EaseTicke_Requrement.docx as 1_3d5e144b-6828-4182-8a2d-d68752422db0.docx
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 4 files for user kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 2 sessions for user kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:utils.db_utils:Create sesision type: file-based of chat session: 10
+INFO:main:File-based chat session created: session_id=10, user=kongden, title=Faiss
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 0 chat history item from chat session 10 , user:kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 0 chat history item from chat session 10 , user:kongden
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 3 sessions for user kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 0 chat history item from chat session 10 , user:kongden
+INFO:main:Created JWT token for user: kongden
+INFO:main:Login successful: kongden
+INFO:main:Authenticated user: kongden
+INFO:main:Authenticated User Object: type=<class 'utils.db_utils.User'>, user_id=1
+INFO:main:Retrieved 0 chat history items for session 10, user kongden
+INFO:main:Retrieved 1 file paths for user kongden
+INFO:utils.chat_utils:Processing chat query: What is EaseTicket
+INFO:utils.chat_utils:History context: 
+WARNING:utils.chat_utils:FAISS index path not found
+WARNING:utils.chat_utils:No relevant content retreived for ./uploaded_file/1_3d5e144b-6828-4182-8a2d-d68752422db0.docx
+INFO:utils.chat_utils:Prompt template: input_variables=['file_content', 'history', 'query'] input_types={} partial_variables={} template='You are a helpful assistant.\nUse the following conversation history for context (if any):\n{history}\nUse the following file content for context (if any):\n{file_content}\nAnswer the following question concisely: {query}'
+INFO:utils.chat_utils:Formatted prompt: You are a helpful assistant.
+Use the following conversation history for context (if any):
+
+Use the following file content for context (if any):
+
+Answer the following question concisely: What is EaseTicket
+INFO:utils.chat_utils:LLM response: <think>
+Okay, so I need to figure out what EaseTicket is. I'm not sure where to start, but I'll try breaking it down step by step.
+
+First, the user provided a conversation history and some file content, but I don't see any specific details in those that directly mention EaseTicket. So maybe EaseTicket isn't part of the usual files we discuss here. I should consider what information is relevant when someone asks about services like this.
+
+I know thatEase tickets are a type of travel ticket designed to make buying tickets easier for travelers, especially with digital options available. They often include features like canceling easily and having a mobile app. So if EaseTicket is related to tickets or tickets, it might be something similar but perhaps more specific or different from the generalease tickets.
+
+Wait, maybeEaseTicket refers to some kind of online ticket system. I should think about other ticketing options available in this context. Maybe it's part of a travel portal or an airline service that offers convenience features. Without specific details from the conversation history or file content, it's hard to pin down what exactly EaseTicket does.
+
+I could also consider thatEase tickets are more common than some other travel services, so if there's something called EaseTicket, it might be a specialized version of this type of ticket. It's possible that it adds additional features or integrates with existing payment systems more effectively.
+
+Another angle is to think about the user experience when using such tickets. Ease tickets usually have easy cancellation methods, quick updates on availability, and sometimes even in-app ordering for multiple passengers. If EaseTicket has these features or others, it would be a helpful option for travelers looking to simplify their ticket purchasing process.
+
+I'm not sure if there's any specific information from the user's chat history that ties into EaseTicket beyond what I've considered. Since there's no direct content provided about its features or platform, my best bet is to explain the general concept of tickets and how Ease might fit into that category, mentioning that without more context, it's hard to give a precise answer.
+
+So, in summary, since I don't have specific details from the conversation history or file content related to EaseTicket, I'll provide an overview of ticket purchasing options and then state that without further information, I can only offer general knowledge about travel tickets. Maybe ask for more details if needed.
+</think>
+
+EaseTicket is a service that offers convenience features in ticket purchasing, such as easy cancellation and integration with popular payment systems. It's part of the broader category of travel tickets aimed at simplifying the process for travelers. Without specific details from the provided content, it's challenging to offer a precise definition, but it likely includes features like mobile apps or easy updates on availability. For more information, please share any additional details from the conversation history or file content related to EaseTicket.
+INFO:main:Query with files processed for user kongden: What is EaseTicket
